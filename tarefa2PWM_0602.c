@@ -33,6 +33,13 @@ void pwm_servo_180()
     sleep_ms(5000);
 }
 
+// Move o servo para a posição de 90 graus por 5 segundos
+void pwm_servo_90()
+{
+    pwm_set_gpio_level(PWM_PIN, ANG_90);
+    sleep_ms(5000);
+}
+
 int main()
 {
     stdio_init_all();
