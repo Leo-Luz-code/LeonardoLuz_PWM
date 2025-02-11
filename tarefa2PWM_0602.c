@@ -52,9 +52,41 @@ int main()
     stdio_init_all();
     uint slice = pwm_gpio_to_slice_num(PWM_PIN); // Obtém o slice PWM associado ao pino
 
+    pwm_config(slice);
+
+    // Funções de movimentação do servo
+    pwm_servo_180();
+    pwm_servo_90();
+    pwm_servo_0();
+
+    uint level = ANG_0; // A posição inicial é de 0 graus
+    bool onward = true; // O movimento começa para frente. Isto é, positivo
+
+    // Loop principal
     while (true)
     {
-        printf("Hello, world!\n");
-        sleep_ms(1000);
+        if (onward) // Sentido positivo
+        {
+            level += STEP;
+        }
+        else // Sentido negativo
+        {
+            level -= STEP;
+        }
+
+        // Define o nível PWM no pino para ajustar o servo
+        pwm_set_gpio_level(PWM_PIN, level);
+
+        // Verifica os limites para inverter a direção
+        if (level <= ANG_0) // A partir daqui, a direção é positiva
+        {
+            onward = true;
+        }
+        if (level >= ANG_180) // A partir daqui, a direção é negativa
+        {
+            onward = false;
+        }
+
+        sleep_ms(10);
     }
 }
