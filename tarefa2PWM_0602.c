@@ -15,9 +15,21 @@
 // Incremento utilizado para transição gradual entre os ângulos
 #define STEP 25 // Valor de incremento para ajuste suave (100.000 / 4000)
 
+// Configura o PWM no slice especificado
+void pwm_config(uint slice)
+{
+    gpio_set_function(PWM_PIN, GPIO_FUNC_PWM);
+
+    pwm_set_clkdiv(slice, DIV); // Define o divisor de clock
+    pwm_set_wrap(slice, WRAP);  // Define o valor máximo do contador
+
+    pwm_set_enabled(slice, true); // Habilita o PWM no slice configurado
+}
+
 int main()
 {
     stdio_init_all();
+    uint slice = pwm_gpio_to_slice_num(PWM_PIN); // Obtém o slice PWM associado ao pino
 
     while (true)
     {
