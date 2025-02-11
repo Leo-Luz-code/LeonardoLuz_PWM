@@ -16,7 +16,7 @@
 #define STEP 25 // Valor de incremento para ajuste suave (100.000 / 4000)
 
 // Configura o PWM no slice especificado
-void pwm_config(uint slice)
+void pwm_config_local(uint slice)
 {
     gpio_set_function(PWM_PIN, GPIO_FUNC_PWM);
 
@@ -50,13 +50,17 @@ void pwm_servo_0()
 int main()
 {
     stdio_init_all();
+
     uint slice = pwm_gpio_to_slice_num(PWM_PIN); // Obtém o slice PWM associado ao pino
 
-    pwm_config(slice);
+    // Configura o PWM de acordo com o slice associado ao pino
+    pwm_config_local(slice);
 
     // Funções de movimentação do servo
     pwm_servo_180();
+
     pwm_servo_90();
+
     pwm_servo_0();
 
     uint level = ANG_0; // A posição inicial é de 0 graus
